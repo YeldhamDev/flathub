@@ -1,0 +1,49 @@
+app-id: page.codeberg.yeldham.Librerama
+base: org.godotengine.godot.BaseApp
+base-version: "3.3"
+runtime: org.freedesktop.Platform
+runtime-version: "20.08"
+default-branch: stable
+sdk: org.freedesktop.Sdk
+command: librerama
+rename-icon: icon
+
+finish-args:
+  - --socket=x11
+  - --socket=pulseaudio
+  - --filesystem=home
+  - --device=dri
+
+modules:
+  - name: librerama
+    buildsystem: simple
+
+    sources:
+      - type: script
+        dest-filename: run.sh
+        commands:
+          - /app/bin/godot-runner --main-pack /app/bin/librerama.pck
+
+      - type: file
+        url: https://codeberg.org/attachments/8368a534-72cb-48f0-8c76-a98440f1130f
+        sha256: 000e233ceedb17b64f13974f785588bb9e73a1c74ab6b7a3f4a7de1bed4d3baf
+        dest-filename: "librerama.pck"
+
+      - type: file
+        url: https://codeberg.org/Yeldham/librerama/raw/tag/v0.4.1/export/icons/icon.svg
+        sha256: 68b443a0b9cfeb9bfca093a5bd3531fe418d842f1fd8be8c5415a6d1a41f7b79
+
+      - type: file
+        url: https://codeberg.org/Yeldham/librerama/raw/tag/v0.4.1/export/freedesktop/io.yeldham.librerama.desktop
+        sha256: 7bca7c12a1646f138d19b9879fcf5101c2a78b5502c92e7a930df38e0c38b102
+
+      - type: file
+        url: https://codeberg.org/Yeldham/librerama/raw/tag/v0.4.1/export/freedesktop/io.yeldham.librerama.appdata.xml
+        sha256: d5a3ab8ba11a8aa55da29da75db47780cee5705eec7b9f6b06855f2ac44a5d5b
+
+    build-commands:
+      - install -Dm755 run.sh /app/bin/librerama
+      - install -Dm644 librerama.pck /app/bin/librerama.pck
+      - install -Dm644 icon.svg -t /app/share/icons/hicolor/scalable/apps/
+      - install -Dm644 io.yeldham.librerama.desktop -t /app/share/applications/
+      - install -Dm644 io.yeldham.librerama.appdata.xml -t /app/share/appdata/
